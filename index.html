@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For You 🌸</title>
+    <style>
+        :root {
+            --primary-pink: #ff8fab;
+            --rcb-red: #ed1c24;
+            --rcb-gold: #c6a15b;
+            --bg-color: #fff0f3;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        #container {
+            background: white;
+            padding: 30px;
+            border-radius: 25px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            text-align: center;
+            max-width: 450px;
+            width: 90%;
+            border: 3px solid var(--primary-pink);
+            z-index: 10;
+        }
+
+        h2 { color: #444; line-height: 1.4; font-size: 1.2rem; }
+        
+        .media-box {
+            height: 220px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        img {
+            max-height: 100%;
+            max-width: 100%;
+            border-radius: 12px;
+            display: none;
+        }
+
+        .btn-group {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        button {
+            padding: 12px 28px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .yes-btn { background-color: var(--primary-pink); color: white; }
+        .no-btn { background-color: #f1f1f1; color: #666; }
+        .rcb-btn { background-color: var(--rcb-red); color: white; border: 2px solid var(--rcb-gold); }
+
+        button:hover { transform: scale(1.05); }
+
+        /* Snow */
+        .snowflake {
+            position: fixed;
+            top: -10%;
+            color: white;
+            user-select: none;
+            pointer-events: none;
+            animation: fall linear infinite;
+        }
+
+        @keyframes fall {
+            to { transform: translateY(110vh); }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="container">
+        <div class="media-box">
+            <span id="emoji" style="font-size: 80px;">💌</span>
+            <img id="display-img" src="" alt="Response">
+        </div>
+        <h2 id="text-content">I know last night happened because of my fault. I am not angry with you, so don't think too much about it. <br><br> Are you still angry with me?</h2>
+        
+        <div id="btn-area" class="btn-group">
+            <button class="yes-btn" onclick="handleInput(true)">Yes</button>
+            <button class="no-btn" onclick="handleInput(false)">No</button>
+        </div>
+    </div>
+
+    <script>
+        let stage = 1;
+
+        function handleInput(isYes) {
+            const text = document.getElementById('text-content');
+            const img = document.getElementById('display-img');
+            const emoji = document.getElementById('emoji');
+            const btns = document.getElementById('btn-area');
+
+            if (stage === 1) {
+                // If she says YES (is angry) or NO (not angry), we move to waffle request
+                stage = 2;
+                emoji.style.display = "none";
+                img.style.display = "block";
+                img.src = "https://content.jdmagicbox.com/v2/comp/mumbai/r5/022pxx22.xx22.190116204535.h5r5/catalogue/the-belgian-waffle-co--goregaon-west-mumbai-waffle-centres-0ps2dlrmuc.jpg"; // Waffle
+                text.innerText = "I understand. Regardless, I really want to make it up to you... How about a Waffle? 🧇";
+                btns.innerHTML = `
+                    <button class="yes-btn" onclick="handleInput(true)">Yes!</button>
+                    <button class="no-btn" onclick="handleInput(false)">No</button>
+                `;
+            } 
+            else if (stage === 2) {
+                if (isYes) {
+                    // YES to Waffle -> Show RCB Jersey
+                    showRCB();
+                } else {
+                    // NO to Waffle -> Show Black Rose & ask to agree
+                    stage = 3;
+                    img.src = "https://m.media-amazon.com/images/I/51PvAAOoKML._AC_UF350,350_QL80_.jpg"; // Black Rose
+                    text.innerText = "Please don't say no... 🌹 I'm really sorry. Can we just agree to move past this? Please?";
+                    btns.innerHTML = `
+                        <button class="yes-btn" onclick="showRCB()">Okay, fine</button>
+                        <button class="no-btn" onclick="handleInput(false)">Still No</button>
+                    `;
+                }
+            }
+            else if (stage === 3 && !isYes) {
+                text.innerText = "I'll keep asking until you forgive me! 🥺 Please?";
+            }
+        }
+
+        function showRCB() {
+            const text = document.getElementById('text-content');
+            const img = document.getElementById('display-img');
+            const btns = document.getElementById('btn-area');
+            
+            img.style.display = "block";
+            // Using a reliable RCB Jersey Placeholder
+            img.src = "https://zoomcricket.in/wp-content/uploads/2025/07/rcb-jersey.jpg"; 
+            text.innerHTML = "You're the best! For being so cool, here's the legendary RCB Jersey! 🏏<br>Can I have one more chance?";
+            
+            btns.innerHTML = `
+                <button class="rcb-btn" onclick="finalCelebration()">Give another chance</button>
+            `;
+        }
+
+        function finalCelebration() {
+            const text = document.getElementById('text-content');
+            const btns = document.getElementById('btn-area');
+            const img = document.getElementById('display-img');
+
+            img.style.display = "none";
+            document.getElementById('emoji').style.display = "block";
+            document.getElementById('emoji').innerText = "🥳✨";
+            
+            text.innerHTML = "<span style='font-size: 1.5rem; color: #d63384;'>YAY! THANK YOU! ❤️</span><br>I promise to make things better!";
+            btns.innerHTML = "<b>Let's Go! 🚀</b>";
+            
+            startSnowing();
+        }
+
+        function startSnowing() {
+            setInterval(() => {
+                const flake = document.createElement('div');
+                flake.classList.add('snowflake');
+                flake.innerText = '❄️';
+                flake.style.left = Math.random() * 100 + 'vw';
+                flake.style.animationDuration = Math.random() * 3 + 2 + 's';
+                flake.style.opacity = Math.random();
+                flake.style.fontSize = Math.random() * 10 + 10 + 'px';
+                document.body.appendChild(flake);
+                setTimeout(() => flake.remove(), 5000);
+            }, 100);
+        }
+    </script>
+</body>
+</html>
